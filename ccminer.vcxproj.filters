@@ -112,6 +112,9 @@
     <Filter Include="Source Files\CUDA\tribus">
       <UniqueIdentifier>{1e548d79-c217-4203-989a-a592fe2b2de3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\CUDA\gost">
+      <UniqueIdentifier>{6a99bc95-f402-465e-9e64-b042bd241bb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="compat\jansson\dump.c">
@@ -960,6 +963,12 @@
     </CudaCompile>
     <CudaCompile Include="equi\cuda_equi.cu">
       <Filter>Source Files\equi</Filter>
+    </CudaCompile>
+    <CudaCompile Include="gost\cuda_gosthash.cu">
+      <Filter>Source Files\CUDA\gost</Filter>
+    </CudaCompile>
+    <CudaCompile Include="gost\gost.cu">
+      <Filter>Source Files\CUDA\gost</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>

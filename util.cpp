@@ -2197,6 +2197,9 @@ void print_hash_tests(void)
 	fugue256_hash(&hash[0], &buf[0], 32);
 	printpfx("fugue256", hash);
 
+	gostd_hash(&hash[0], &buf[0]);
+	printpfx("gost", hash);
+
 	groestlhash(&hash[0], &buf[0]);
 	printpfx("groestl", hash);
 
@@ -2207,7 +2210,7 @@ void print_hash_tests(void)
 	printpfx("hmq1725", hash);
 
 	hsr_hash(&hash[0], &buf[0]);
-        printpfx("hsr", hash);
+	printpfx("hsr", hash);
 
 	jha_hash(&hash[0], &buf[0]);
 	printpfx("jha", hash);

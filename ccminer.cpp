@@ -1564,6 +1564,9 @@ static bool stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 		case ALGO_WHIRLCOIN:
 			SHA256((uchar*)sctx->job.coinbase, sctx->job.coinbase_size, (uchar*)merkle_root);
 			break;
+		case ALGO_GOSTD:
+			gostd(merkle_root, sctx->job.coinbase, (int)sctx->job.coinbase_size);
+			break;
 		case ALGO_WHIRLPOOL:
 		default:
 			sha256d(merkle_root, sctx->job.coinbase, (int)sctx->job.coinbase_size);
@@ -1573,6 +1576,11 @@ static bool stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 		memcpy(merkle_root + 32, sctx->job.merkle[i], 32);
 		if (opt_algo == ALGO_HEAVY || opt_algo == ALGO_MJOLLNIR)
 			heavycoin_hash(merkle_root, merkle_root, 64);
+		else if (opt_algo == ALGO_GOSTD)
+		{
+			memcpy(merkle_root + 32, merkle_root, 32);
+			gostd(merkle_root, merkle_root, 64);
+		}
 		else
 			sha256d(merkle_root, merkle_root, 64);
 	}
@@ -2239,6 +2247,7 @@ static void *miner_thread(void *userdata)
 			case ALGO_X13:
 			case ALGO_WHIRLCOIN:
 			case ALGO_WHIRLPOOL:
+			case ALGO_GOSTD:
 				minmax = 0x400000;
 				break;
 			case ALGO_X14:
@@ -2494,6 +2503,9 @@ static void *miner_thread(void *userdata)
 			break;
 		case ALGO_ZR5:
 			rc = scanhash_zr5(thr_id, &work, max_nonce, &hashes_done);
+			break;
+		case ALGO_GOSTD:
+			rc = scanhash_gostd(thr_id, &work, max_nonce, &hashes_done);
 			break;
 
 		default:
