@@ -161,10 +161,10 @@
 #define PACKAGE_NAME "ccminer"
 
 /* Define to the home page for this package. */
-#define PACKAGE_URL "http://github.com/tpruvot/ccminer"
+#define PACKAGE_URL "http://github.com/r4sas/ccminer-gostd-lite"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "2.2.2"
+#define PACKAGE_VERSION "2.2.2-gostd-lite"
 
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
