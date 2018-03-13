@@ -1,5 +1,5 @@
 
-ccminer 2.2.2 (Oct. 2017) "phi and hsr algos"
+ccminer 2.2.4 (Jan. 2018)     "lyra2v2 and keccak improvements"
 ---------------------------------------------------------------
 
 ***************************************************************
@@ -80,7 +80,7 @@ its command line interface and options.
                           blake2s     use to mine Nevacoin (Blake2-S 256)
                           bmw         use to mine Midnight
                           cryptolight use to mine AEON cryptonight (MEM/2)
-                          cryptonight use to mine XMR cryptonight
+                          cryptonight use to mine XMR cryptonight, Bytecoin, Dash, DigitalNote, etc
                           c11/flax    use to mine Chaincoin and Flax
                           decred      use to mine Decred 180 bytes Blake256-14
                           deep        use to mine Deepcoin
@@ -89,24 +89,24 @@ its command line interface and options.
                           fresh       use to mine Freshcoin
                           fugue256    use to mine Fuguecoin
                           groestl     use to mine Groestlcoin
-                          heavy       use to mine Heavycoin
                           hsr         use to mine Hshare
                           jackpot     use to mine Sweepcoin
                           keccak      use to mine Maxcoin
+                          keccakc     use to mine CreativeCoin
                           lbry        use to mine LBRY Credits
                           luffa       use to mine Joincoin
                           lyra2       use to mine CryptoCoin
                           lyra2v2     use to mine Vertcoin
                           lyra2z      use to mine Zerocoin (XZC)
-                          mjollnir    use to mine Mjollnircoin
                           myr-gr      use to mine Myriad-Groest
-                          neoscrypt   use to mine FeatherCoin
+                          neoscrypt   use to mine FeatherCoin, Trezarcoin, Orbitcoin, etc
                           nist5       use to mine TalkCoin
                           penta       use to mine Joincoin / Pentablake
                           phi         use to mine LUXCoin
+                          polytimos   use to mine Polytimos
                           quark       use to mine Quarkcoin
                           qubit       use to mine Qubit
-                          scrypt      use to mine Scrypt coins
+                          scrypt      use to mine Scrypt coins (Litecoin, Dogecoin, etc)
                           scrypt:N    use to mine Scrypt-N (:10 for 2048 iterations)
                           scrypt-jane use to mine Chacha coins like Cache and Ultracoin
                           s3          use to mine 1coin (ONE)
@@ -122,7 +122,6 @@ its command line interface and options.
                           x11         use to mine DarkCoin
                           x14         use to mine X14Coin
                           x15         use to mine Halcyon
-                          x17         use to mine X17
                           x17         use to mine X17
                           vanilla     use to mine Vanilla (Blake256)
                           veltor      use to mine VeltorCoin
@@ -140,8 +139,6 @@ its command line interface and options.
       --cuda-schedule   Set device threads scheduling mode (default: auto)
   -f, --diff-factor     Divide difficulty by this factor (default 1.0)
   -m, --diff-multiplier Multiply difficulty by this value (default 1.0)
-      --vote=VOTE       block reward vote (for HeavyCoin)
-      --trust-pool      trust the max block reward vote (maxvote) sent by the pool
   -o, --url=URL         URL of mining server
   -O, --userpass=U:P    username:password pair for mining server
   -u, --user=USERNAME   username for mining server
@@ -280,6 +277,16 @@ so we can more efficiently implement new algorithms using the latest hardware
 features.
 
 >>> RELEASE HISTORY <<<
+  Jan. 04th 2017  v2.2.4
+                  Improve lyra2v2
+                  Higher keccak default intensity
+                  Drop SM 2.x support by default, for CUDA 9 and more recent
+
+  Dec. 04th 2017  v2.2.3
+                  Polytimos Algo
+                  Handle keccakc variant (with refreshed sha256d merkle)
+                  Optimised keccak for SM5+, based on alexis improvements
+
   Oct. 09th 2017  v2.2.2
                   Import and clean the hsr algo (x13 + custom hash)
                   Import and optimise phi algo from LuxCoin repository

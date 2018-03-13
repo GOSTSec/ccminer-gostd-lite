@@ -3208,6 +3208,8 @@ int main(int argc, char *argv[])
 	}
 	// Prevent windows to sleep while mining
 	SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED);
+	// Enable windows high precision timer
+	timeBeginPeriod(1);
 #endif
 	if (opt_affinity != -1) {
 		if (!opt_quiet)
@@ -3400,10 +3402,6 @@ int main(int argc, char *argv[])
 		"using '%s' algorithm.",
 		opt_n_threads, opt_n_threads > 1 ? "s":"",
 		algo_names[opt_algo]);
-
-#ifdef WIN32
-	timeBeginPeriod(1); // enable high timer precision (similar to Google Chrome Trick)
-#endif
 
 	/* main loop - simply wait for workio thread to exit */
 	pthread_join(thr_info[work_thr_id].pth, NULL);
