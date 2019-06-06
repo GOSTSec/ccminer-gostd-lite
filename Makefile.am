@@ -21,7 +21,7 @@ ccminer_SOURCES	= elist.h miner.h compat.h \
 			  crc32.c cuda_checkhash.cu \
 			  ccminer.cpp pools.cpp util.cpp bench.cpp bignum.cpp \
 			  api.cpp hashlog.cpp nvml.cpp stats.cpp sysinfos.cpp cuda.cpp \
-			  nvsettings.cpp \
+			  nvsettings.cpp sph/sha2.c \
 			  sph/streebog.c gost/gost.cu gost/cuda_gosthash.cu
 
 

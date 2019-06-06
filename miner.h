@@ -264,6 +264,7 @@ json_t * json_load_url(char* cfg_url, json_error_t *err);
 
 #define USER_AGENT PACKAGE_NAME "/" PACKAGE_VERSION
 
+void sha256d(unsigned char *hash, const unsigned char *data, int len);
 void gostd(void *output, const void *input, size_t len);
 
 #define HAVE_SHA256_4WAY 0

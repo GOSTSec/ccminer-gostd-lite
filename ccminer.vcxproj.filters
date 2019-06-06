@@ -161,6 +161,9 @@
     <ClInclude Include="uint256.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClCompile Include="sph\sha2.c">
+      <Filter>Source Files\sph</Filter>
+    </ClCompile>
     <ClInclude Include="sph\sph_streebog.h">
       <Filter>Header Files\sph</Filter>
     </ClInclude>

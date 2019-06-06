@@ -39,7 +39,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 9.0.props" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 10.1.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -158,6 +158,7 @@
       <!--CodeGeneration>compute_30,sm_30;compute_35,sm_35</CodeGeneration-->
       <!--CodeGeneration>compute_50,sm_50;compute_52,sm_52</CodeGeneration-->
       <!--CodeGeneration>compute_61,sm_61</CodeGeneration-->
+      <!--CodeGeneration>compute_75,sm_75</CodeGeneration-->
       <CodeGeneration>compute_30,sm_30;compute_35,sm_35;compute_50,sm_50;compute_52,sm_52;compute_61,sm_61</CodeGeneration>
       <AdditionalOptions>--ptxas-options="-O2" --Wno-deprecated-gpu-targets %(AdditionalOptions)</AdditionalOptions>
       <Optimization>O3</Optimization>
@@ -205,6 +206,7 @@
       <!--CodeGeneration>compute_30,sm_30;compute_35,sm_35</CodeGeneration-->
       <!--CodeGeneration>compute_50,sm_50;compute_52,sm_52</CodeGeneration-->
       <!--CodeGeneration>compute_61,sm_61</CodeGeneration-->
+      <!--CodeGeneration>compute_75,sm_75</CodeGeneration-->
       <CodeGeneration>compute_30,sm_30;compute_35,sm_35;compute_50,sm_50;compute_52,sm_52;compute_61,sm_61</CodeGeneration>
       <Include>$(NVTOOLSEXT_PATH)\include</Include>
       <Optimization>O3</Optimization>
@@ -249,6 +251,7 @@
     <ClCompile Include="api.cpp" />
     <ClCompile Include="sysinfos.cpp" />
     <ClCompile Include="crc32.c" />
+    <ClCompile Include="sph\sha2.c" />
     <ClCompile Include="sph\streebog.c" />
   </ItemGroup>
   <ItemGroup>
@@ -300,7 +303,7 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 9.0.targets" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 10.1.targets" />
   </ImportGroup>
   <!-- Copy the required dlls -->
   <Target Name="AfterBuild">
