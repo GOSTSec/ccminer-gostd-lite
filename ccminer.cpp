@@ -231,7 +231,8 @@ static char const usage[] = "\
 Usage: " PROGRAM_NAME " [OPTIONS]\n\
 Options:\n\
   -a, --algo=ALGO       specify the hash algorithm to use\n\
-			gostd       GOSTcoin\n\
+                        gostd       Double GOST R 34.11\n\
+                        gostcoin    GOSTcoin\n\
   -d, --devices         Comma separated list of CUDA devices to use.\n\
                         Device IDs start counting from 0! Alternatively takes\n\
                         string names of your cards like gtx780ti or gt640#2\n\
@@ -1297,13 +1298,23 @@ static bool stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 	work->pooln = sctx->pooln;
 
 	/* Generate merkle root */
-	gostd(merkle_root, sctx->job.coinbase, (int)sctx->job.coinbase_size);
+	switch (opt_algo) {
+		case ALGO_GOSTCOIN:
+			gostd(merkle_root, sctx->job.coinbase, (int)sctx->job.coinbase_size);
+			break;
+		default:
+			sha256d(merkle_root, sctx->job.coinbase, (int)sctx->job.coinbase_size);
+	}
 
 	for (i = 0; i < sctx->job.merkle_count; i++) {
 		memcpy(merkle_root + 32, sctx->job.merkle[i], 32);
-		//GOSTCoin
-		memcpy(merkle_root + 32, merkle_root, 32);
-		gostd(merkle_root, merkle_root, 64);
+
+		if (opt_algo == ALGO_GOSTCOIN)
+		{
+			memcpy(merkle_root + 32, merkle_root, 32);
+			gostd(merkle_root, merkle_root, 64);
+		} else
+			sha256d(merkle_root, merkle_root, 64);
 	}
 	
 	/* Increment extranonce2 */
@@ -1736,7 +1747,7 @@ static void *miner_thread(void *userdata)
 		max64 *= (uint32_t)thr_hashrates[thr_id];
 
 		/* on start, max64 should not be 0,
-		 *    before hashrate is computed */
+		 * before hashrate is computed */
 		if (max64 < minmax) {
 			minmax = 0x400000;
 			max64 = max(minmax-1, max64);
@@ -2344,6 +2355,7 @@ void parse_arg(int key, char *arg)
 		if (v < 1 || v > 65535) // sanity check
 			show_usage_and_exit(1);
 		opt_api_mcast_port = v;
+		break;
 	case 'B':
 		opt_background = true;
 		break;

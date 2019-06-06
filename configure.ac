@@ -1,4 +1,4 @@
-AC_INIT([ccminer], [2.2.4-gostd-lite], [], [ccminer], [https://github.com/GOSTSec/ccminer-gostd-lite])
+AC_INIT([ccminer], [2.3.1-gostd-lite], [], [ccminer], [https://github.com/GOSTSec/ccminer-gostd-lite])
 
 AC_PREREQ([2.59c])
 AC_CANONICAL_SYSTEM

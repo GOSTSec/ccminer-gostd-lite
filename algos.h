@@ -6,6 +6,7 @@
 
 enum sha_algos {
 	ALGO_GOSTD = 0,
+	ALGO_GOSTCOIN,
 	ALGO_AUTO,
 	ALGO_COUNT
 };
@@ -14,6 +15,7 @@ extern volatile enum sha_algos opt_algo;
 
 static const char *algo_names[] = {
 	"gostd",
+	"gostcoin",
 	"auto", /* reserved for multi algo */
 	""
 };
@@ -35,6 +37,8 @@ static inline int algo_to_int(char* arg)
 			i = ALGO_AUTO;
 		else if (!strcasecmp("gost", arg))
 			i = ALGO_GOSTD;
+		else if (!strcasecmp("gostcoin", arg))
+			i = ALGO_GOSTCOIN;
 		else
 			i = -1;
 	}

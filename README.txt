@@ -1,5 +1,5 @@
 
-ccminer 2.2.4 (Jan. 2018)     "lyra2v2 and keccak improvements"
+ccminer 2.3.1 (Jan. 2018)     "lyra2v2 and keccak improvements"
 ---------------------------------------------------------------
 
 ***************************************************************
@@ -277,6 +277,26 @@ so we can more efficiently implement new algorithms using the latest hardware
 features.
 
 >>> RELEASE HISTORY <<<
+  Jan. 30th 2019  v2.3.1
+                  Handle Lyra2v3 algo
+                  Handle sha256q algo
+                  Handle exosis algo
+                  Handle blake2b standard algo
+
+  June 23th 2018  v2.3
+                  Handle phi2 header variation for smart contracts
+                  Handle monero, stellite, graft and cryptolight variants
+                  Handle SonoA algo
+
+  June 10th 2018  v2.2.6
+                  New phi2 algo for LUX
+                  New allium algo for Garlic
+
+  Apr. 02nd 2018  v2.2.5
+                  New x16r algo for Raven
+                  New x16s algo for Pigeon and Eden
+                  New x12 algo for Galaxycash
+                  Equihash (SIMT) sync issues for the Volta generation
   Jan. 04th 2017  v2.2.4
                   Improve lyra2v2
                   Higher keccak default intensity

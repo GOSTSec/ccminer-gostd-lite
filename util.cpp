@@ -614,7 +614,7 @@ err_out:
 json_t *json_rpc_call_pool(CURL *curl, struct pool_infos *pool, const char *req,
 	bool longpoll_scan, bool longpoll, int *curl_err)
 {
-	char userpass[512];
+	char userpass[768];
 	// todo, malloc and store that in pool array
 	snprintf(userpass, sizeof(userpass), "%s%c%s", pool->user,
 		strlen(pool->pass)?':':'\0', pool->pass);
@@ -625,7 +625,7 @@ json_t *json_rpc_call_pool(CURL *curl, struct pool_infos *pool, const char *req,
 /* called only from longpoll thread, we have the lp_url */
 json_t *json_rpc_longpoll(CURL *curl, char *lp_url, struct pool_infos *pool, const char *req, int *curl_err)
 {
-	char userpass[512];
+	char userpass[768];
 	snprintf(userpass, sizeof(userpass), "%s%c%s", pool->user,
 		strlen(pool->pass)?':':'\0', pool->pass);
 
@@ -1346,8 +1346,12 @@ bool stratum_authorize(struct stratum_ctx *sctx, const char *user, const char *p
 	err_val = json_object_get(val, "error");
 
 	if (!res_val || json_is_false(res_val) ||
-	    (err_val && !json_is_null(err_val)))  {
-		applog(LOG_ERR, "Stratum authentication failed");
+		(err_val && !json_is_null(err_val))) {
+		if (err_val && json_is_array(err_val)) {
+			const char* reason = json_string_value(json_array_get(err_val, 1));
+			applog(LOG_ERR, "Stratum authentication failed (%s)", reason);
+		}
+		else applog(LOG_ERR, "Stratum authentication failed");
 		goto out;
 	}
 
@@ -1431,7 +1435,7 @@ static uint32_t getblocheight(struct stratum_ctx *sctx)
 static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 {
 	const char *job_id, *prevhash, *coinb1, *coinb2, *version, *nbits, *stime;
-	const char *claim = NULL, *nreward = NULL;
+	const char *extradata = NULL, *nreward = NULL;
 	size_t coinb1_size, coinb2_size;
 	bool clean, ret = false;
 	int merkle_count, i, p=0;
@@ -1439,19 +1443,9 @@ static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 	uchar **merkle = NULL;
 	// uchar(*merkle_tree)[32] = { 0 };
 	int ntime;
-	char algo[64] = { 0 };
-	get_currentalgo(algo, sizeof(algo));
-	bool has_claim = !strcasecmp(algo, "lbry");
 
 	job_id = json_string_value(json_array_get(params, p++));
 	prevhash = json_string_value(json_array_get(params, p++));
-	if (has_claim) {
-		claim = json_string_value(json_array_get(params, p++));
-		if (!claim || strlen(claim) != 64) {
-			applog(LOG_ERR, "Stratum notify: invalid claim parameter");
-			goto out;
-		}
-	}
 	coinb1 = json_string_value(json_array_get(params, p++));
 	coinb2 = json_string_value(json_array_get(params, p++));
 	merkle_arr = json_array_get(params, p++);
@@ -1465,8 +1459,8 @@ static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 	nreward = json_string_value(json_array_get(params, p++));
 
 	if (!job_id || !prevhash || !coinb1 || !coinb2 || !version || !nbits || !stime ||
-	    strlen(prevhash) != 64 || strlen(version) != 8 ||
-	    strlen(nbits) != 8 || strlen(stime) != 8) {
+		strlen(prevhash) != 64 || strlen(version) != 8 ||
+		strlen(nbits) != 8 || strlen(stime) != 8) {
 		applog(LOG_ERR, "Stratum notify: invalid parameters");
 		goto out;
 	}
@@ -1500,7 +1494,7 @@ static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 	coinb1_size = strlen(coinb1) / 2;
 	coinb2_size = strlen(coinb2) / 2;
 	sctx->job.coinbase_size = coinb1_size + sctx->xnonce1_size +
-	                          sctx->xnonce2_size + coinb2_size;
+		sctx->xnonce2_size + coinb2_size;
 
 	sctx->job.coinbase = (uchar*) realloc(sctx->job.coinbase, sctx->job.coinbase_size);
 	sctx->job.xnonce2 = sctx->job.coinbase + coinb1_size + sctx->xnonce1_size;
@@ -1514,7 +1508,6 @@ static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 	free(sctx->job.job_id);
 	sctx->job.job_id = strdup(job_id);
 	hex2bin(sctx->job.prevhash, prevhash, 32);
-	if (has_claim) hex2bin(sctx->job.claim, claim, 32);
 
 	sctx->job.height = getblocheight(sctx);
 
@@ -2138,7 +2131,7 @@ void print_hash_tests(void)
 	printf(CL_WHT "CPU HASH ON EMPTY BUFFER RESULTS:" CL_N "\n");
 
 	gostd_hash(&hash[0], &buf[0]);
-	printpfx("gost", hash);
+	printpfx("gostd", hash);
 
 	printf("\n");
 
